@@ -1,1 +1,83 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  --background: #f6f7f9;
+  --surface: #ffffff;
+  --surface-secondary: #eef1f4;
+
+  --text-primary: #17191c;
+  --text-secondary: #646b73;
+
+  --border: #dde1e6;
+
+  --accent: #3559e0;
+
+  --status-passed: #16803c;
+  --status-failed: #c83333;
+  --status-error: #a63bd4;
+  --status-pending: #a16b00;
+
+  color: var(--text-primary);
+  background: var(--background);
+}
+
+[data-theme="dark"] {
+  --background: #111315;
+  --surface: #191c1f;
+  --surface-secondary: #23272b;
+
+  --text-primary: #f2f4f5;
+  --text-secondary: #a5abb2;
+
+  --border: #30353a;
+
+  --accent: #7187ff;
+
+  --status-passed: #49bc70;
+  --status-failed: #ef6666;
+  --status-error: #d979f2;
+  --status-pending: #e0a839;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  min-width: 320px;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.page-header {
+  margin-bottom: 28px;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+.page-header p {
+  margin: 8px 0 0;
+  color: var(--text-secondary);
+}

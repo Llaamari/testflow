@@ -1,0 +1,46 @@
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">T</span>
+
+      <div>
+        <div class="brand-name">TestFlow</div>
+        <div class="brand-subtitle">Test Management</div>
+      </div>
+    </div>
+
+    <nav class="navigation" aria-label="Main navigation">
+      <a
+        routerLink="/dashboard"
+        routerLinkActive="active"
+      >
+        Dashboard
+      </a>
+
+      <a
+        routerLink="/projects"
+        routerLinkActive="active"
+      >
+        Projects
+      </a>
+
+      <a
+        routerLink="/test-runs"
+        routerLinkActive="active"
+      >
+        Test Runs
+      </a>
+
+      <a
+        routerLink="/import"
+        routerLinkActive="active"
+      >
+        Import Results
+      </a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <router-outlet />
+  </main>
+</div>
