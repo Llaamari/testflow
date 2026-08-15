@@ -6,6 +6,7 @@ from app.routes.health import health_bp
 from app.routes.projects import projects_bp
 from app.routes.test_suites import test_suites_bp
 from app.routes.test_runs import test_runs_bp
+from app.routes.test_results import test_results_bp
 
 
 def create_app(config_class=DevelopmentConfig):
@@ -31,6 +32,11 @@ def create_app(config_class=DevelopmentConfig):
 
     app.register_blueprint(
         test_runs_bp,
+        url_prefix="/api/v1",
+    )
+
+    app.register_blueprint(
+        test_results_bp,
         url_prefix="/api/v1",
     )
 

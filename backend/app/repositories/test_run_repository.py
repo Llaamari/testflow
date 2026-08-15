@@ -35,3 +35,25 @@ class TestRunRepository:
         )
 
         return result.deleted_count == 1
+
+    def update_status(
+        self,
+        test_run_id: str,
+        status: str,
+    ) -> dict | None:
+        if not ObjectId.is_valid(test_run_id):
+            return None
+
+        object_id = ObjectId(test_run_id)
+
+        result = self.collection.update_one(
+            {"_id": object_id},
+            {"$set": {"status": status}},
+        )
+
+        if result.matched_count == 0:
+            return None
+
+        return self.collection.find_one(
+            {"_id": object_id}
+        )
