@@ -21,3 +21,49 @@ def app():
 @pytest.fixture()
 def client(app):
     return app.test_client()
+
+
+@pytest.fixture()
+def project(client):
+    response = client.post(
+        "/api/v1/projects",
+        json={
+            "name": "Autonomous Drone Control System",
+            "description": "Fictional project.",
+        },
+    )
+
+    assert response.status_code == 201
+
+    return response.get_json()
+
+
+@pytest.fixture()
+def test_suite(client, project):
+    response = client.post(
+        f"/api/v1/projects/{project['id']}/test-suites",
+        json={
+            "name": "Navigation Tests",
+            "description": "Fictional test suite.",
+        },
+    )
+
+    assert response.status_code == 201
+
+    return response.get_json()
+
+
+@pytest.fixture()
+def test_run(client, project, test_suite):
+    response = client.post(
+        "/api/v1/test-runs",
+        json={
+            "project_id": project["id"],
+            "test_suite_id": test_suite["id"],
+            "software_version": "2.4.0",
+        },
+    )
+
+    assert response.status_code == 201
+
+    return response.get_json()

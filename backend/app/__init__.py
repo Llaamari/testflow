@@ -8,6 +8,7 @@ from app.routes.test_suites import test_suites_bp
 from app.routes.test_runs import test_runs_bp
 from app.routes.test_results import test_results_bp
 from app.routes.imports import imports_bp
+from app.database import create_indexes, init_database
 
 
 def create_app(config_class=DevelopmentConfig):
@@ -15,6 +16,7 @@ def create_app(config_class=DevelopmentConfig):
     app.config.from_object(config_class)
 
     init_database(app.config["MONGO_URI"])
+    create_indexes()
 
     app.register_blueprint(
         health_bp,

@@ -42,15 +42,7 @@ def create_run(client, project_id, suite_id):
     return response.get_json()
 
 
-def test_import_parquet_results(client):
-    project = create_project(client)
-    suite = create_suite(client, project["id"])
-    run = create_run(
-        client,
-        project["id"],
-        suite["id"],
-    )
-
+def test_import_parquet_results(client, test_run):
     dataframe = pd.DataFrame(
         {
             "test_name": [
@@ -83,7 +75,7 @@ def test_import_parquet_results(client):
     buffer.seek(0)
 
     response = client.post(
-        f"/api/v1/test-runs/{run['id']}/results/import/parquet",
+        f"/api/v1/test-runs/{test_run['id']}/results/import/parquet",
         data={
             "file": (
                 buffer,
@@ -101,8 +93,10 @@ def test_import_parquet_results(client):
     assert data["run_status"] == "FAILED"
 
     results_response = client.get(
-        f"/api/v1/test-runs/{run['id']}/results"
+        f"/api/v1/test-runs/{test_run['id']}/results"
     )
+
+    assert results_response.status_code == 200
 
     results = results_response.get_json()
 

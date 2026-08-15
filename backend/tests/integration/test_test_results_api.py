@@ -34,17 +34,9 @@ def create_run(client, project_id, suite_id):
     return response.get_json()
 
 
-def test_create_test_result(client):
-    project = create_project(client)
-    suite = create_suite(client, project["id"])
-    run = create_run(
-        client,
-        project["id"],
-        suite["id"],
-    )
-
+def test_create_test_result(client, test_run):
     response = client.post(
-        f"/api/v1/test-runs/{run['id']}/results",
+        f"/api/v1/test-runs/{test_run['id']}/results",
         json={
             "test_name": "waypoint_navigation",
             "status": "PASSED",
@@ -59,20 +51,15 @@ def test_create_test_result(client):
     assert data["test_name"] == "waypoint_navigation"
     assert data["status"] == "PASSED"
     assert data["duration_ms"] == 183.5
-    assert data["test_run_id"] == run["id"]
+    assert data["test_run_id"] == test_run["id"]
 
 
-def test_run_status_becomes_passed_after_passed_result(client):
-    project = create_project(client)
-    suite = create_suite(client, project["id"])
-    run = create_run(
-        client,
-        project["id"],
-        suite["id"],
-    )
-
+def test_run_status_becomes_passed_after_passed_result(
+    client,
+    test_run,
+):
     client.post(
-        f"/api/v1/test-runs/{run['id']}/results",
+        f"/api/v1/test-runs/{test_run['id']}/results",
         json={
             "test_name": "waypoint_navigation",
             "status": "PASSED",
@@ -81,25 +68,22 @@ def test_run_status_becomes_passed_after_passed_result(client):
     )
 
     response = client.get(
-        f"/api/v1/test-runs/{run['id']}"
+        f"/api/v1/test-runs/{test_run['id']}"
     )
+
+    assert response.status_code == 200
 
     data = response.get_json()
 
     assert data["status"] == "PASSED"
 
 
-def test_failed_result_changes_run_status_to_failed(client):
-    project = create_project(client)
-    suite = create_suite(client, project["id"])
-    run = create_run(
-        client,
-        project["id"],
-        suite["id"],
-    )
-
+def test_failed_result_changes_run_status_to_failed(
+    client,
+    test_run,
+):
     client.post(
-        f"/api/v1/test-runs/{run['id']}/results",
+        f"/api/v1/test-runs/{test_run['id']}/results",
         json={
             "test_name": "test_one",
             "status": "PASSED",
@@ -108,7 +92,7 @@ def test_failed_result_changes_run_status_to_failed(client):
     )
 
     client.post(
-        f"/api/v1/test-runs/{run['id']}/results",
+        f"/api/v1/test-runs/{test_run['id']}/results",
         json={
             "test_name": "test_two",
             "status": "FAILED",
@@ -117,24 +101,25 @@ def test_failed_result_changes_run_status_to_failed(client):
     )
 
     response = client.get(
-        f"/api/v1/test-runs/{run['id']}"
+        f"/api/v1/test-runs/{test_run['id']}"
     )
 
+    assert response.status_code == 200
     assert response.get_json()["status"] == "FAILED"
 
 
-def test_error_result_has_highest_priority(client):
-    project = create_project(client)
-    suite = create_suite(client, project["id"])
-    run = create_run(
-        client,
-        project["id"],
-        suite["id"],
-    )
-
-    for status in ["PASSED", "FAILED", "ERROR", "PENDING"]:
-        client.post(
-            f"/api/v1/test-runs/{run['id']}/results",
+def test_error_result_has_highest_priority(
+    client,
+    test_run,
+):
+    for status in [
+        "PASSED",
+        "FAILED",
+        "ERROR",
+        "PENDING",
+    ]:
+        response = client.post(
+            f"/api/v1/test-runs/{test_run['id']}/results",
             json={
                 "test_name": f"test_{status.lower()}",
                 "status": status,
@@ -142,24 +127,22 @@ def test_error_result_has_highest_priority(client):
             },
         )
 
+        assert response.status_code == 201
+
     response = client.get(
-        f"/api/v1/test-runs/{run['id']}"
+        f"/api/v1/test-runs/{test_run['id']}"
     )
 
+    assert response.status_code == 200
     assert response.get_json()["status"] == "ERROR"
 
 
-def test_pending_result_keeps_priority_over_passed(client):
-    project = create_project(client)
-    suite = create_suite(client, project["id"])
-    run = create_run(
-        client,
-        project["id"],
-        suite["id"],
-    )
-
+def test_pending_result_keeps_priority_over_passed(
+    client,
+    test_run,
+):
     client.post(
-        f"/api/v1/test-runs/{run['id']}/results",
+        f"/api/v1/test-runs/{test_run['id']}/results",
         json={
             "test_name": "finished_test",
             "status": "PASSED",
@@ -168,7 +151,7 @@ def test_pending_result_keeps_priority_over_passed(client):
     )
 
     client.post(
-        f"/api/v1/test-runs/{run['id']}/results",
+        f"/api/v1/test-runs/{test_run['id']}/results",
         json={
             "test_name": "unfinished_test",
             "status": "PENDING",
@@ -177,9 +160,10 @@ def test_pending_result_keeps_priority_over_passed(client):
     )
 
     response = client.get(
-        f"/api/v1/test-runs/{run['id']}"
+        f"/api/v1/test-runs/{test_run['id']}"
     )
 
+    assert response.status_code == 200
     assert response.get_json()["status"] == "PENDING"
 
 
