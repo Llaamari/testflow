@@ -12,6 +12,7 @@ def app():
     yield app
 
     database = get_database()
+    database["test_suites"].delete_many({})
     database["projects"].delete_many({})
 
 
