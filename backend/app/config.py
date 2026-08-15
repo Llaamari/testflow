@@ -16,3 +16,7 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
+    MONGO_URI = os.getenv(
+        "TEST_MONGO_URI",
+        "mongodb://localhost:27017/testflow_test",
+    )
