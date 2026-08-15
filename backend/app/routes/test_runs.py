@@ -6,6 +6,8 @@ from app.repositories.test_run_repository import TestRunRepository
 from app.repositories.test_suite_repository import TestSuiteRepository
 from app.services.test_run_service import TestRunService
 from app.utils.serialization import serialize_document
+from datetime import datetime
+from app.models.status import TestStatus
 
 
 test_runs_bp = Blueprint("test_runs", __name__)
@@ -23,9 +25,86 @@ def get_test_run_service() -> TestRunService:
 
 @test_runs_bp.get("/test-runs")
 def get_test_runs():
+    project_id = request.args.get("project_id")
+    status_value = request.args.get("status")
+    software_version = request.args.get("software_version")
+    date_from_value = request.args.get("date_from")
+    date_to_value = request.args.get("date_to")
+
+    status = None
+
+    if status_value is not None:
+        try:
+            status = TestStatus(status_value).value
+        except ValueError:
+            return jsonify(
+                {
+                    "error": {
+                        "code": "VALIDATION_ERROR",
+                        "message": (
+                            "Status must be one of: "
+                            "PASSED, FAILED, ERROR, PENDING."
+                        ),
+                    }
+                }
+            ), 400
+
+    date_from = None
+    date_to = None
+
+    if date_from_value is not None:
+        try:
+            date_from = datetime.fromisoformat(
+                date_from_value.replace("Z", "+00:00")
+            )
+        except ValueError:
+            return jsonify(
+                {
+                    "error": {
+                        "code": "VALIDATION_ERROR",
+                        "message": "date_from must be a valid ISO 8601 value.",
+                    }
+                }
+            ), 400
+
+    if date_to_value is not None:
+        try:
+            date_to = datetime.fromisoformat(
+                date_to_value.replace("Z", "+00:00")
+            )
+        except ValueError:
+            return jsonify(
+                {
+                    "error": {
+                        "code": "VALIDATION_ERROR",
+                        "message": "date_to must be a valid ISO 8601 value.",
+                    }
+                }
+            ), 400
+
+    if (
+        date_from is not None
+        and date_to is not None
+        and date_from > date_to
+    ):
+        return jsonify(
+            {
+                "error": {
+                    "code": "VALIDATION_ERROR",
+                    "message": "date_from must not be later than date_to.",
+                }
+            }
+        ), 400
+
     service = get_test_run_service()
 
-    runs = service.get_runs()
+    runs = service.get_runs(
+        project_id=project_id,
+        status=status,
+        software_version=software_version,
+        date_from=date_from,
+        date_to=date_to,
+    )
 
     return jsonify(
         [serialize_document(run) for run in runs]

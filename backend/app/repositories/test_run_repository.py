@@ -1,4 +1,7 @@
 from bson import ObjectId
+from datetime import datetime
+
+from bson import ObjectId
 from pymongo.database import Database
 
 
@@ -6,9 +9,41 @@ class TestRunRepository:
     def __init__(self, database: Database):
         self.collection = database["test_runs"]
 
-    def find_all(self) -> list[dict]:
+    def find_all(
+        self,
+        project_id: str | None = None,
+        status: str | None = None,
+        software_version: str | None = None,
+        date_from: datetime | None = None,
+        date_to: datetime | None = None,
+    ) -> list[dict]:
+        query = {}
+
+        if project_id is not None:
+            if not ObjectId.is_valid(project_id):
+                return []
+
+            query["project_id"] = ObjectId(project_id)
+
+        if status is not None:
+            query["status"] = status
+
+        if software_version is not None:
+            query["software_version"] = software_version
+
+        if date_from is not None or date_to is not None:
+            started_at_query = {}
+
+            if date_from is not None:
+                started_at_query["$gte"] = date_from
+
+            if date_to is not None:
+                started_at_query["$lte"] = date_to
+
+            query["started_at"] = started_at_query
+
         return list(
-            self.collection.find().sort("started_at", -1)
+            self.collection.find(query).sort("started_at", -1)
         )
 
     def find_by_id(self, run_id: str) -> dict | None:

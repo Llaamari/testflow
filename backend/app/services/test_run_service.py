@@ -19,8 +19,21 @@ class TestRunService:
         self.project_repository = project_repository
         self.suite_repository = suite_repository
 
-    def get_runs(self) -> list[dict]:
-        return self.run_repository.find_all()
+    def get_runs(
+        self,
+        project_id: str | None = None,
+        status: str | None = None,
+        software_version: str | None = None,
+        date_from: datetime | None = None,
+        date_to: datetime | None = None,
+    ) -> list[dict]:
+        return self.run_repository.find_all(
+            project_id=project_id,
+            status=status,
+            software_version=software_version,
+            date_from=date_from,
+            date_to=date_to,
+        )
 
     def get_run(self, test_run_id: str) -> dict | None:
         return self.run_repository.find_by_id(test_run_id)
