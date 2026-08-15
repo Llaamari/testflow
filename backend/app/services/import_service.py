@@ -17,7 +17,7 @@ class ImportService:
         self.result_repository = result_repository
         self.run_repository = run_repository
 
-    def import_json_results(
+    def import_results(
         self,
         test_run_id: str,
         results: list[dict],

@@ -9,6 +9,8 @@ class Config:
         "mongodb://localhost:27017/testflow",
     )
 
+    MAX_CONTENT_LENGTH = 10 * 1024 * 1024
+
 
 class DevelopmentConfig(Config):
     DEBUG = True
