@@ -57,3 +57,6 @@ class ProjectRepository:
         )
 
         return result.deleted_count == 1
+
+    def count(self) -> int:
+        return self.collection.count_documents({})

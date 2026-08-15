@@ -37,3 +37,32 @@ class TestResultRepository:
                 {"_id": {"$in": result.inserted_ids}}
             )
         )
+
+    def count(self) -> int:
+        return self.collection.count_documents({})
+
+
+    def count_by_status(self) -> dict[str, int]:
+        statuses = {
+            "PASSED": 0,
+            "FAILED": 0,
+            "ERROR": 0,
+            "PENDING": 0,
+        }
+
+        pipeline = [
+            {
+                "$group": {
+                    "_id": "$status",
+                    "count": {"$sum": 1},
+                }
+            }
+        ]
+
+        for item in self.collection.aggregate(pipeline):
+            status = item["_id"]
+
+            if status in statuses:
+                statuses[status] = item["count"]
+
+        return statuses

@@ -9,6 +9,7 @@ from app.routes.test_runs import test_runs_bp
 from app.routes.test_results import test_results_bp
 from app.routes.imports import imports_bp
 from app.database import create_indexes, init_database
+from app.routes.dashboard import dashboard_bp
 
 
 def create_app(config_class=DevelopmentConfig):
@@ -45,6 +46,11 @@ def create_app(config_class=DevelopmentConfig):
 
     app.register_blueprint(
         imports_bp,
+        url_prefix="/api/v1",
+    )
+
+    app.register_blueprint(
+        dashboard_bp,
         url_prefix="/api/v1",
     )
 

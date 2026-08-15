@@ -92,3 +92,17 @@ class TestRunRepository:
         return self.collection.find_one(
             {"_id": object_id}
         )
+
+    def count(self) -> int:
+        return self.collection.count_documents({})
+
+
+    def find_recent(
+        self,
+        limit: int = 5,
+    ) -> list[dict]:
+        return list(
+            self.collection.find()
+            .sort("started_at", -1)
+            .limit(limit)
+        )
