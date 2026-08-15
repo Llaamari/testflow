@@ -90,3 +90,100 @@ def create_project():
     )
 
     return jsonify(serialize_document(project)), 201
+
+
+@projects_bp.patch("/projects/<project_id>")
+def update_project(project_id: str):
+    data = request.get_json(silent=True)
+
+    if data is None:
+        return jsonify(
+            {
+                "error": {
+                    "code": "INVALID_REQUEST",
+                    "message": "Request body must contain valid JSON.",
+                }
+            }
+        ), 400
+
+    updates = {}
+
+    if "name" in data:
+        name = data["name"]
+
+        if not isinstance(name, str) or not name.strip():
+            return jsonify(
+                {
+                    "error": {
+                        "code": "VALIDATION_ERROR",
+                        "message": "Project name must be a non-empty string.",
+                    }
+                }
+            ), 400
+
+        updates["name"] = name.strip()
+
+    if "description" in data:
+        description = data["description"]
+
+        if not isinstance(description, str):
+            return jsonify(
+                {
+                    "error": {
+                        "code": "VALIDATION_ERROR",
+                        "message": "Project description must be a string.",
+                    }
+                }
+            ), 400
+
+        updates["description"] = description.strip()
+
+    if not updates:
+        return jsonify(
+            {
+                "error": {
+                    "code": "VALIDATION_ERROR",
+                    "message": "No valid project fields were provided.",
+                }
+            }
+        ), 400
+
+    service = get_project_service()
+
+    project = service.update_project(
+        project_id,
+        updates,
+    )
+
+    if project is None:
+        return jsonify(
+            {
+                "error": {
+                    "code": "PROJECT_NOT_FOUND",
+                    "message": "Project was not found.",
+                }
+            }
+        ), 404
+
+    return jsonify(
+        serialize_document(project)
+    )
+
+
+@projects_bp.delete("/projects/<project_id>")
+def delete_project(project_id: str):
+    service = get_project_service()
+
+    deleted = service.delete_project(project_id)
+
+    if not deleted:
+        return jsonify(
+            {
+                "error": {
+                    "code": "PROJECT_NOT_FOUND",
+                    "message": "Project was not found.",
+                }
+            }
+        ), 404
+
+    return "", 204

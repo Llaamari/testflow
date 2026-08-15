@@ -28,3 +28,18 @@ class ProjectService:
         }
 
         return self.repository.create(project_data)
+
+    def update_project(
+        self,
+        project_id: str,
+        updates: dict,
+    ) -> dict | None:
+        updates["updated_at"] = datetime.now(UTC)
+
+        return self.repository.update(
+            project_id,
+            updates,
+        )
+
+    def delete_project(self, project_id: str) -> bool:
+        return self.repository.delete(project_id)

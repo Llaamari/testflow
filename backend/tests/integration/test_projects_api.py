@@ -119,3 +119,116 @@ def test_create_project_without_json_body_returns_400(client):
     data = response.get_json()
 
     assert data["error"]["code"] == "INVALID_REQUEST"
+
+def test_update_project(client):
+    create_response = client.post(
+        "/api/v1/projects",
+        json={
+            "name": "Original Project",
+            "description": "Original description.",
+        },
+    )
+
+    project_id = create_response.get_json()["id"]
+
+    response = client.patch(
+        f"/api/v1/projects/{project_id}",
+        json={
+            "name": "Updated Project",
+        },
+    )
+
+    assert response.status_code == 200
+
+    data = response.get_json()
+
+    assert data["name"] == "Updated Project"
+    assert data["description"] == "Original description."
+
+def test_update_project_with_blank_name_returns_400(client):
+    create_response = client.post(
+        "/api/v1/projects",
+        json={
+            "name": "Valid Project",
+            "description": "",
+        },
+    )
+
+    project_id = create_response.get_json()["id"]
+
+    response = client.patch(
+        f"/api/v1/projects/{project_id}",
+        json={
+            "name": "   ",
+        },
+    )
+
+    assert response.status_code == 400
+
+    data = response.get_json()
+
+    assert data["error"]["code"] == "VALIDATION_ERROR"
+
+def test_update_project_without_valid_fields_returns_400(client):
+    create_response = client.post(
+        "/api/v1/projects",
+        json={
+            "name": "Protected Fields Test",
+            "description": "",
+        },
+    )
+
+    project_id = create_response.get_json()["id"]
+
+    response = client.patch(
+        f"/api/v1/projects/{project_id}",
+        json={
+            "created_at": "2020-01-01",
+        },
+    )
+
+    assert response.status_code == 400
+
+def test_update_unknown_project_returns_404(client):
+    response = client.patch(
+        "/api/v1/projects/507f1f77bcf86cd799439011",
+        json={
+            "name": "Does Not Exist",
+        },
+    )
+
+    assert response.status_code == 404
+
+def test_delete_project(client):
+    create_response = client.post(
+        "/api/v1/projects",
+        json={
+            "name": "Project To Delete",
+            "description": "",
+        },
+    )
+
+    project_id = create_response.get_json()["id"]
+
+    delete_response = client.delete(
+        f"/api/v1/projects/{project_id}"
+    )
+
+    assert delete_response.status_code == 204
+
+    get_response = client.get(
+        f"/api/v1/projects/{project_id}"
+    )
+
+    assert get_response.status_code == 404
+
+def test_delete_unknown_project_returns_404(client):
+    response = client.delete(
+        "/api/v1/projects/507f1f77bcf86cd799439011"
+    )
+
+    assert response.status_code == 404
+
+    data = response.get_json()
+
+    assert data["error"]["code"] == "PROJECT_NOT_FOUND"

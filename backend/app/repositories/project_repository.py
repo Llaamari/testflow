@@ -25,3 +25,35 @@ class ProjectRepository:
         return self.collection.find_one(
             {"_id": result.inserted_id}
         )
+
+    def update(
+        self,
+        project_id: str,
+        updates: dict,
+    ) -> dict | None:
+        if not ObjectId.is_valid(project_id):
+            return None
+
+        object_id = ObjectId(project_id)
+
+        result = self.collection.update_one(
+            {"_id": object_id},
+            {"$set": updates},
+        )
+
+        if result.matched_count == 0:
+            return None
+
+        return self.collection.find_one(
+            {"_id": object_id}
+        )
+
+    def delete(self, project_id: str) -> bool:
+        if not ObjectId.is_valid(project_id):
+            return False
+
+        result = self.collection.delete_one(
+            {"_id": ObjectId(project_id)}
+        )
+
+        return result.deleted_count == 1
