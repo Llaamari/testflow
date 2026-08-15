@@ -22,3 +22,18 @@ class TestResultRepository:
         return self.collection.find_one(
             {"_id": result.inserted_id}
         )
+
+    def create_many(
+        self,
+        results_data: list[dict],
+    ) -> list[dict]:
+        if not results_data:
+            return []
+
+        result = self.collection.insert_many(results_data)
+
+        return list(
+            self.collection.find(
+                {"_id": {"$in": result.inserted_ids}}
+            )
+        )
