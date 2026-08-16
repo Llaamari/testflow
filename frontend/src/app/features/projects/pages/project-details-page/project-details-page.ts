@@ -40,7 +40,27 @@ export class ProjectDetailsPage implements OnInit {
   readonly savingSuite = signal(false);
   readonly errorMessage = signal<string | null>(null);
 
+  readonly editingSuiteId = signal<string | null>(null);
+  readonly deletingSuiteId = signal<string | null>(null);
+  readonly savingEditedSuite = signal(false);
+
   readonly suiteForm = this.formBuilder.nonNullable.group({
+    name: [
+      '',
+      [
+        Validators.required,
+        Validators.maxLength(120),
+      ],
+    ],
+    description: [
+      '',
+      [
+        Validators.maxLength(500),
+      ],
+    ],
+  });
+
+  readonly editSuiteForm = this.formBuilder.nonNullable.group({
     name: [
       '',
       [
@@ -110,6 +130,97 @@ export class ProjectDetailsPage implements OnInit {
           );
 
           this.savingSuite.set(false);
+        },
+      });
+  }
+
+  startEditingSuite(suite: TestSuite): void {
+    this.editingSuiteId.set(suite.id);
+
+    this.editSuiteForm.setValue({
+      name: suite.name,
+      description: suite.description,
+    });
+  }
+
+  cancelEditingSuite(): void {
+    this.editingSuiteId.set(null);
+
+    this.editSuiteForm.reset({
+      name: '',
+      description: '',
+    });
+  }
+
+  saveSuite(suiteId: string): void {
+    if (this.editSuiteForm.invalid) {
+      this.editSuiteForm.markAllAsTouched();
+      return;
+    }
+
+    this.savingEditedSuite.set(true);
+    this.errorMessage.set(null);
+
+    this.testSuiteService
+      .updateSuite(
+        suiteId,
+        this.editSuiteForm.getRawValue(),
+      )
+      .subscribe({
+        next: (updatedSuite) => {
+          this.suites.update((suites) =>
+            suites.map((suite) =>
+              suite.id === updatedSuite.id
+                ? updatedSuite
+                : suite,
+            ),
+          );
+
+          this.editingSuiteId.set(null);
+          this.savingEditedSuite.set(false);
+        },
+        error: (error) => {
+          console.error(
+            'Test suite update failed:',
+            error,
+          );
+
+          this.errorMessage.set(
+            'Test suite could not be updated.',
+          );
+
+          this.savingEditedSuite.set(false);
+        },
+      });
+  }
+
+  deleteSuite(suiteId: string): void {
+    this.deletingSuiteId.set(suiteId);
+    this.errorMessage.set(null);
+
+    this.testSuiteService
+      .deleteSuite(suiteId)
+      .subscribe({
+        next: () => {
+          this.suites.update((suites) =>
+            suites.filter(
+              (suite) => suite.id !== suiteId,
+            ),
+          );
+
+          this.deletingSuiteId.set(null);
+        },
+        error: (error) => {
+          console.error(
+            'Test suite deletion failed:',
+            error,
+          );
+
+          this.errorMessage.set(
+            'Test suite could not be deleted.',
+          );
+
+          this.deletingSuiteId.set(null);
         },
       });
   }

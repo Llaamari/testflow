@@ -175,6 +175,43 @@
   font-style: italic;
 }
 
+.card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.secondary-button,
+.danger-button {
+  padding: 8px 12px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.secondary-button {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-primary);
+}
+
+.danger-button {
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--status-failed) 35%,
+      var(--border)
+    );
+  background: transparent;
+  color: var(--status-failed);
+}
+
+.secondary-button:disabled,
+.danger-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 @media (max-width: 900px) {
   .details-layout {
     grid-template-columns: 1fr;

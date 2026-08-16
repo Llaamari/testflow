@@ -31,4 +31,22 @@ export class TestSuiteService {
       request,
     );
   }
+
+  updateSuite(
+    suiteId: string,
+    request: CreateTestSuiteRequest,
+  ): Observable<TestSuite> {
+    return this.http.patch<TestSuite>(
+      `${API_BASE_URL}/test-suites/${suiteId}`,
+      request,
+    );
+  }
+
+  deleteSuite(
+    suiteId: string,
+  ): Observable<void> {
+    return this.http.delete<void>(
+      `${API_BASE_URL}/test-suites/${suiteId}`,
+    );
+  }
 }

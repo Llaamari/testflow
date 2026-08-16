@@ -124,20 +124,106 @@
         <div class="suite-list">
           @for (suite of suites(); track suite.id) {
             <article class="suite-card">
-              <h3>{{ suite.name }}</h3>
-
-              @if (suite.description) {
-                <p>{{ suite.description }}</p>
+              @if (editingSuiteId() === suite.id) {
+                <form
+                  [formGroup]="editSuiteForm"
+                  (ngSubmit)="saveSuite(suite.id)"
+                  class="suite-form"
+                >
+                  <div class="form-field">
+                    <label>
+                      Name
+                    </label>
+                    
+                    <input
+                      type="text"
+                      formControlName="name"
+                    />
+                    
+                    @if (
+                      editSuiteForm.controls.name.touched
+                      && editSuiteForm.controls.name.hasError('required')
+                    ) {
+                      <p class="field-error">
+                        Test suite name is required.
+                      </p>
+                    }
+                  </div>
+                  
+                  <div class="form-field">
+                    <label>
+                      Description
+                    </label>
+                    
+                    <textarea
+                      rows="3"
+                      formControlName="description"
+                    ></textarea>
+                  </div>
+                  
+                  <div class="card-actions">
+                    <button
+                      type="submit"
+                      class="primary-button"
+                      [disabled]="savingEditedSuite()"
+                    >
+                      @if (savingEditedSuite()) {
+                        Saving...
+                      } @else {
+                        Save
+                      }
+                    </button>
+                    
+                    <button
+                      type="button"
+                      class="secondary-button"
+                      (click)="cancelEditingSuite()"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
               } @else {
-                <p class="muted">
-                  No description.
-                </p>
+                <div>
+                  <h3>{{ suite.name }}</h3>
+                  
+                  @if (suite.description) {
+                    <p>{{ suite.description }}</p>
+                  } @else {
+                    <p class="muted">
+                      No description.
+                    </p>
+                  }
+                </div>
+                
+                <div class="suite-meta">
+                  Created:
+                  {{ suite.created_at | date:'mediumDate' }}
+                </div>
+                
+                <div class="card-actions">
+                  <button
+                    type="button"
+                    class="secondary-button"
+                    (click)="startEditingSuite(suite)"
+                  >
+                    Edit
+                  </button>
+                  
+                  <button
+                    type="button"
+                    class="danger-button"
+                    [disabled]="deletingSuiteId() === suite.id"
+                    (click)="deleteSuite(suite.id)"
+                  >
+                    @if (deletingSuiteId() === suite.id) {
+                      Deleting...
+                    } @else {
+                      Delete
+                    }
+                  </button>
+                </div>
               }
-
-              <div class="suite-meta">
-                Created:
-                {{ suite.created_at | date:'mediumDate' }}
-              </div>
             </article>
           }
         </div>
