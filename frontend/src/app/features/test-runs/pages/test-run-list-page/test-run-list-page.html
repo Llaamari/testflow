@@ -1,6 +1,213 @@
 <header class="page-header">
   <div>
     <h1>Test Runs</h1>
-    <p>Browse and filter automated test executions.</p>
+    <p>Browse, filter and create test executions.</p>
   </div>
 </header>
+
+@if (errorMessage()) {
+  <section class="state-panel error-state">
+    {{ errorMessage() }}
+  </section>
+}
+
+<section class="runs-layout">
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Create Test Run</h2>
+      <p>Start a new execution for a test suite.</p>
+    </div>
+
+    <form
+      [formGroup]="runForm"
+      (ngSubmit)="createRun()"
+      class="run-form"
+    >
+      <div class="form-field">
+        <label for="run-project">
+          Project
+        </label>
+
+        <select
+          id="run-project"
+          formControlName="project_id"
+          (change)="onRunProjectChange()"
+        >
+          <option value="">
+            Select project
+          </option>
+
+          @for (
+            project of projects();
+            track project.id
+          ) {
+            <option [value]="project.id">
+              {{ project.name }}
+            </option>
+          }
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label for="run-suite">
+          Test Suite
+        </label>
+
+        <select
+          id="run-suite"
+          formControlName="test_suite_id"
+          [disabled]="suites().length === 0"
+        >
+          <option value="">
+            Select test suite
+          </option>
+
+          @for (
+            suite of suites();
+            track suite.id
+          ) {
+            <option [value]="suite.id">
+              {{ suite.name }}
+            </option>
+          }
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label for="software-version">
+          Software Version
+        </label>
+
+        <input
+          id="software-version"
+          type="text"
+          formControlName="software_version"
+          placeholder="2.4.0"
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="primary-button"
+        [disabled]="creating()"
+      >
+        @if (creating()) {
+          Creating...
+        } @else {
+          Create Test Run
+        }
+      </button>
+    </form>
+  </section>
+
+  <section class="panel runs-panel">
+    <div class="panel-header">
+      <h2>Test Runs</h2>
+      <p>{{ runs().length }} run(s)</p>
+    </div>
+
+    <form
+      [formGroup]="filterForm"
+      (ngSubmit)="applyFilters()"
+      class="filters"
+    >
+      <select formControlName="project_id">
+        <option value="">
+          All projects
+        </option>
+
+        @for (
+          project of projects();
+          track project.id
+        ) {
+          <option [value]="project.id">
+            {{ project.name }}
+          </option>
+        }
+      </select>
+
+      <select formControlName="status">
+        <option value="">
+          All statuses
+        </option>
+
+        @for (status of statuses; track status) {
+          <option [value]="status">
+            {{ status }}
+          </option>
+        }
+      </select>
+
+      <input
+        type="text"
+        formControlName="software_version"
+        placeholder="Software version"
+      />
+
+      <button
+        type="submit"
+        class="secondary-button"
+      >
+        Apply
+      </button>
+
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="clearFilters()"
+      >
+        Clear
+      </button>
+    </form>
+
+    @if (loading()) {
+      <div class="state-panel">
+        Loading test runs...
+      </div>
+    } @else if (runs().length === 0) {
+      <div class="empty-state">
+        <h3>No test runs found</h3>
+        <p>
+          Create a run or change the active filters.
+        </p>
+      </div>
+    } @else {
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Run ID</th>
+              <th>Version</th>
+              <th>Status</th>
+              <th>Started</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (run of runs(); track run.id) {
+              <tr>
+                <td class="run-id">
+                  {{ run.run_id }}
+                </td>
+
+                <td>
+                  {{ run.software_version }}
+                </td>
+
+                <td>
+                  <app-status-badge
+                    [status]="run.status"
+                  />
+                </td>
+
+                <td class="timestamp">
+                  {{ run.started_at | date:'medium' }}
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+</section>
