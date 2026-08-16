@@ -38,6 +38,20 @@
         Import Results
       </a>
     </nav>
+
+    <div class="sidebar-footer">
+      <button
+        type="button"
+        class="theme-button"
+        (click)="themeService.toggleTheme()"
+      >
+        @if (themeService.theme() === 'dark') {
+          ☀ Light mode
+        } @else {
+          ◐ Dark mode
+        }
+      </button>
+    </div>
   </aside>
 
   <main class="main-content">

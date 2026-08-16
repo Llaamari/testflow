@@ -6,13 +6,13 @@
 </header>
 
 @if (loading()) {
-  <section class="state-panel">
-    Loading dashboard...
-  </section>
+  <app-loading-state
+    message="Loading dashboard..."
+  />
 } @else if (errorMessage()) {
-  <section class="state-panel error-state">
-    {{ errorMessage() }}
-  </section>
+  <app-error-state
+    [message]="errorMessage()!"
+  />
 } @else if (stats(); as dashboardStats) {
   <section class="statistics-grid">
     <app-statistics-card
@@ -61,9 +61,10 @@
     </div>
 
     @if (dashboardStats.recent_runs.length === 0) {
-      <div class="empty-state">
-        No test runs yet.
-      </div>
+      <app-empty-state
+        title="No test runs yet"
+        message="Create a test run to populate the dashboard."
+      />
     } @else {
       <div class="table-wrapper">
         <table>

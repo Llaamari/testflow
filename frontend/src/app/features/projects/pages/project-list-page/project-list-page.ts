@@ -168,6 +168,14 @@ export class ProjectListPage implements OnInit {
   }
 
   deleteProject(projectId: string): void {
+    const confirmed = window.confirm(
+      'Delete this project? This action cannot be undone.',
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
     this.deletingProjectId.set(projectId);
     this.errorMessage.set(null);
 
@@ -184,7 +192,10 @@ export class ProjectListPage implements OnInit {
           this.deletingProjectId.set(null);
         },
         error: (error) => {
-          console.error('Project deletion failed:', error);
+          console.error(
+            'Project deletion failed:',
+            error,
+          );
 
           this.errorMessage.set(
             'Project could not be deleted.',

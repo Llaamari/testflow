@@ -14,10 +14,32 @@
 .sidebar {
   position: sticky;
   top: 0;
+  display: flex;
+  flex-direction: column;
   height: 100vh;
   padding: 24px 16px;
   border-right: 1px solid var(--border);
   background: var(--surface);
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.theme-button {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--surface-secondary);
+  color: var(--text-primary);
+  cursor: pointer;
+  text-align: left;
+}
+
+.theme-button:hover {
+  border-color: var(--accent);
 }
 
 .brand {
@@ -56,6 +78,7 @@
 }
 
 .navigation a {
+  position: relative;
   padding: 10px 12px;
   border-radius: 6px;
   color: var(--text-secondary);
@@ -71,9 +94,21 @@
 }
 
 .navigation a.active {
+  padding-left: 16px;
   background: var(--surface-secondary);
   color: var(--text-primary);
   font-weight: 600;
+}
+
+.navigation a.active::before {
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 0;
+  width: 3px;
+  border-radius: 999px;
+  background: var(--accent);
+  content: "";
 }
 
 .main-content {

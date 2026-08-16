@@ -195,6 +195,14 @@ export class ProjectDetailsPage implements OnInit {
   }
 
   deleteSuite(suiteId: string): void {
+    const confirmed = window.confirm(
+      'Delete this test suite? This action cannot be undone.',
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
     this.deletingSuiteId.set(suiteId);
     this.errorMessage.set(null);
 

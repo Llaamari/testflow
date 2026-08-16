@@ -5,6 +5,9 @@ import { DashboardStats } from '../../models/dashboard-stats';
 import { DashboardService } from '../../services/dashboard';
 import { StatusBadge } from '../../../../shared/components/status-badge/status-badge';
 import { DatePipe } from '@angular/common';
+import { ErrorState } from '../../../../shared/components/error-state/error-state';
+import { EmptyState } from '../../../../shared/components/empty-state/empty-state';
+import { LoadingState } from '../../../../shared/components/loading-state/loading-state';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -12,6 +15,9 @@ import { DatePipe } from '@angular/common';
     DatePipe,
     StatisticsCard,
     StatusBadge,
+    LoadingState,
+    EmptyState,
+    ErrorState,
   ],
   templateUrl: './dashboard-page.html',
   styleUrl: './dashboard-page.css',
