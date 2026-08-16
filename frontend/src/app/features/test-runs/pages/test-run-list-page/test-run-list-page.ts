@@ -19,6 +19,7 @@ import { StatusBadge } from '../../../../shared/components/status-badge/status-b
 import { TestStatus } from '../../../../shared/models/test-status';
 import { TestRun } from '../../models/test-run';
 import { TestRunService } from '../../services/test-run';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-test-run-list-page',
@@ -26,6 +27,7 @@ import { TestRunService } from '../../services/test-run';
     DatePipe,
     ReactiveFormsModule,
     StatusBadge,
+    RouterLink,
   ],
   templateUrl: './test-run-list-page.html',
   styleUrl: './test-run-list-page.css',

@@ -1,0 +1,178 @@
+.back-link {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.run-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.metadata-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.metadata-card {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.metadata-card span {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--text-secondary);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.metadata-card strong {
+  font-size: 14px;
+}
+
+.panel {
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.panel-header {
+  margin-bottom: 20px;
+}
+
+.panel-header h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.panel-header p {
+  margin: 6px 0 0;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+td {
+  font-size: 13px;
+}
+
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.test-name {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+  font-weight: 600;
+}
+
+.timestamp {
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.error-message {
+  color: var(--status-failed);
+}
+
+.measurements {
+  display: block;
+  max-width: 280px;
+  overflow-wrap: anywhere;
+  color: var(--text-secondary);
+  white-space: normal;
+}
+
+.muted {
+  color: var(--text-secondary);
+}
+
+.state-panel,
+.empty-state {
+  padding: 28px 12px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.error-state {
+  color: var(--status-failed);
+}
+
+.empty-state h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 15px;
+}
+
+.empty-state p {
+  margin: 8px 0 0;
+}
+
+@media (max-width: 900px) {
+  .metadata-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .run-header {
+    flex-direction: column;
+  }
+
+  .metadata-grid {
+    grid-template-columns: 1fr;
+  }
+}

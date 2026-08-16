@@ -144,6 +144,15 @@ tbody tr:last-child td {
   font-weight: 600;
 }
 
+.run-link {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.run-link:hover {
+  text-decoration: underline;
+}
+
 .timestamp {
   color: var(--text-secondary);
   white-space: nowrap;

@@ -1,0 +1,152 @@
+<a
+  routerLink="/test-runs"
+  class="back-link"
+>
+  ← Back to Test Runs
+</a>
+
+@if (loading()) {
+  <section class="state-panel">
+    Loading test run...
+  </section>
+} @else if (errorMessage() && !run()) {
+  <section class="state-panel error-state">
+    {{ errorMessage() }}
+  </section>
+} @else if (run(); as currentRun) {
+  <header class="page-header run-header">
+    <div>
+      <p class="eyebrow">Test Run</p>
+
+      <h1>{{ currentRun.run_id }}</h1>
+
+      <p>
+        Software version
+        <strong>{{ currentRun.software_version }}</strong>
+      </p>
+    </div>
+
+    <app-status-badge
+      [status]="currentRun.status"
+    />
+  </header>
+
+  @if (errorMessage()) {
+    <section class="state-panel error-state">
+      {{ errorMessage() }}
+    </section>
+  }
+
+  <section class="metadata-grid">
+    <article class="metadata-card">
+      <span>Software Version</span>
+      <strong>{{ currentRun.software_version }}</strong>
+    </article>
+
+    <article class="metadata-card">
+      <span>Started</span>
+      <strong>
+        {{ currentRun.started_at | date:'medium' }}
+      </strong>
+    </article>
+
+    <article class="metadata-card">
+      <span>Completed</span>
+
+      <strong>
+        @if (currentRun.completed_at) {
+          {{ currentRun.completed_at | date:'medium' }}
+        } @else {
+          —
+        }
+      </strong>
+    </article>
+
+    <article class="metadata-card">
+      <span>Results</span>
+      <strong>{{ results().length }}</strong>
+    </article>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header">
+      <div>
+        <h2>Test Results</h2>
+        <p>
+          Individual results belonging to this test run.
+        </p>
+      </div>
+    </div>
+
+    @if (results().length === 0) {
+      <div class="empty-state">
+        <h3>No results yet</h3>
+        <p>
+          Import or add test results to populate this run.
+        </p>
+      </div>
+    } @else {
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Test</th>
+              <th>Status</th>
+              <th>Duration</th>
+              <th>Timestamp</th>
+              <th>Error</th>
+              <th>Measurements</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (
+              result of results();
+              track result.id
+            ) {
+              <tr>
+                <td class="test-name">
+                  {{ result.test_name }}
+                </td>
+
+                <td>
+                  <app-status-badge
+                    [status]="result.status"
+                  />
+                </td>
+
+                <td>
+                  {{ result.duration_ms }} ms
+                </td>
+
+                <td class="timestamp">
+                  {{ result.timestamp | date:'medium' }}
+                </td>
+
+                <td>
+                  @if (result.error_message) {
+                    <span class="error-message">
+                      {{ result.error_message }}
+                    </span>
+                  } @else {
+                    <span class="muted">—</span>
+                  }
+                </td>
+
+                <td>
+                  @if (result.measurements) {
+                    <code class="measurements">
+                      {{ result.measurements | json }}
+                    </code>
+                  } @else {
+                    <span class="muted">—</span>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+}

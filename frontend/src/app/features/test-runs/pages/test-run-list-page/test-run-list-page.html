@@ -187,7 +187,12 @@
             @for (run of runs(); track run.id) {
               <tr>
                 <td class="run-id">
-                  {{ run.run_id }}
+                  <a
+                    [routerLink]="['/test-runs', run.id]"
+                    class="run-link"
+                  >
+                    {{ run.run_id }}
+                  </a>
                 </td>
 
                 <td>

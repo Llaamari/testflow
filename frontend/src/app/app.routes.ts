@@ -5,6 +5,7 @@ import { ImportResultsPage } from './features/import-results/pages/import-result
 import { ProjectListPage } from './features/projects/pages/project-list-page/project-list-page';
 import { TestRunListPage } from './features/test-runs/pages/test-run-list-page/test-run-list-page';
 import { ProjectDetailsPage } from './features/projects/pages/project-details-page/project-details-page';
+import { TestRunDetailsPage } from './features/test-runs/pages/test-run-details-page/test-run-details-page';
 
 export const routes: Routes = [
   {
@@ -27,6 +28,10 @@ export const routes: Routes = [
   {
     path: 'test-runs',
     component: TestRunListPage,
+  },
+  {
+    path: 'test-runs/:id',
+    component: TestRunDetailsPage,
   },
   {
     path: 'import',

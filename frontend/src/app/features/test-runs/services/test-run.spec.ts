@@ -92,4 +92,39 @@ describe('TestRunService', () => {
       created_at: '2026-08-16T10:00:00Z',
     });
   });
+
+  it('should load a test run by id', () => {
+    service.getRun('run-1').subscribe();
+
+    const request = httpTesting.expectOne(
+      `${API_BASE_URL}/test-runs/run-1`,
+    );
+
+    expect(request.request.method).toBe('GET');
+
+    request.flush({
+      id: 'run-1',
+      run_id: 'RUN-1',
+      project_id: 'project-1',
+      test_suite_id: 'suite-1',
+      software_version: '2.4.0',
+      status: 'PASSED',
+      started_at: '2026-08-16T10:00:00Z',
+      completed_at: null,
+      created_at: '2026-08-16T10:00:00Z',
+    });
+  });
+
+
+  it('should load results for a test run', () => {
+    service.getResults('run-1').subscribe();
+
+    const request = httpTesting.expectOne(
+      `${API_BASE_URL}/test-runs/run-1/results`,
+    );
+
+    expect(request.request.method).toBe('GET');
+
+    request.flush([]);
+  });
 });

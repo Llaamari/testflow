@@ -8,6 +8,7 @@ import {
   TestRun,
   TestRunFilters,
 } from '../models/test-run';
+import { TestResult } from '../models/test-result';
 
 @Injectable({
   providedIn: 'root',
@@ -83,6 +84,14 @@ export class TestRunService {
   ): Observable<void> {
     return this.http.delete<void>(
       `${API_BASE_URL}/test-runs/${testRunId}`,
+    );
+  }
+
+  getResults(
+    testRunId: string,
+  ): Observable<TestResult[]> {
+    return this.http.get<TestResult[]>(
+      `${API_BASE_URL}/test-runs/${testRunId}/results`,
     );
   }
 }
