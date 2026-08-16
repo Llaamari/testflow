@@ -305,6 +305,14 @@ Run locally from the backend directory:
 ```bash
 python -m scripts.seed_data
 ```
+Sample import files are available in:
+
+```text
+sample-data/
+├── sample-results.json
+└── sample-results.parquet
+```
+Both files contain fully fictional automated test data and can be used with the Import Results UI.
 ## Continuous Integration
 GitHub Actions runs automatically on pushes and pull requests to the repository's default branch.
 
@@ -344,3 +352,6 @@ The project prioritizes:
 - straightforward maintainability
 
 The implementation intentionally avoids unnecessary framework complexity in favor of code that is easy to understand and extend.
+## License
+
+This project is available under the MIT License.

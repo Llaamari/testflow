@@ -2,23 +2,27 @@
 __pycache__/
 *.py[cod]
 *.pyo
-backend/.venv/
-backend/.env
+*.pyd
 .pytest_cache/
 .coverage
 htmlcov/
 
-# Node / Angular
-frontend/node_modules/
-frontend/dist/
-frontend/.angular/
+# Python virtual environments
+.venv/
+venv/
 
-# Environment files
+# Environment variables
 .env
 .env.*
 !.env.example
 
-# IDE
+# Angular / Node
+node_modules/
+dist/
+.angular/
+coverage/
+
+# IDE / editor
 .vscode/
 .idea/
 
@@ -28,3 +32,14 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# MongoDB / local data
+data/
+mongodb-data/
+
+# Build output
+out-tsc/

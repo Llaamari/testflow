@@ -1,0 +1,35 @@
+{
+  "results": [
+    {
+      "test_name": "waypoint_navigation",
+      "status": "PASSED",
+      "duration_ms": 182.4,
+      "timestamp": "2026-08-16T10:00:00Z",
+      "measurements": {
+        "cpu_percent": 31.2,
+        "memory_mb": 248.5
+      }
+    },
+    {
+      "test_name": "route_recalculation",
+      "status": "PASSED",
+      "duration_ms": 315.8,
+      "timestamp": "2026-08-16T10:00:02Z",
+      "measurements": {
+        "cpu_percent": 37.1,
+        "memory_mb": 261.4
+      }
+    },
+    {
+      "test_name": "gps_signal_loss_recovery",
+      "status": "FAILED",
+      "duration_ms": 942.1,
+      "timestamp": "2026-08-16T10:00:05Z",
+      "error_message": "Position recovery exceeded the fictional test threshold.",
+      "measurements": {
+        "cpu_percent": 44.8,
+        "memory_mb": 279.6
+      }
+    }
+  ]
+}
