@@ -57,6 +57,8 @@ export class TestRunListPage implements OnInit {
     project_id: [''],
     status: [''],
     software_version: [''],
+    date_from: [''],
+    date_to: [''],
   });
 
   readonly runForm = this.formBuilder.nonNullable.group({
@@ -85,14 +87,26 @@ export class TestRunListPage implements OnInit {
     const filters = this.filterForm.getRawValue();
 
     this.loadRuns({
-      project_id: filters.project_id || undefined,
-      status: (
+      project_id:
+        filters.project_id || undefined,
+
+      status:
         filters.status
           ? filters.status as TestStatus
-          : undefined
-      ),
+          : undefined,
+
       software_version:
         filters.software_version || undefined,
+
+      date_from:
+        filters.date_from
+          ? this.toStartOfDay(filters.date_from)
+          : undefined,
+
+      date_to:
+        filters.date_to
+          ? this.toEndOfDay(filters.date_to)
+          : undefined,
     });
   }
 
@@ -101,6 +115,8 @@ export class TestRunListPage implements OnInit {
       project_id: '',
       status: '',
       software_version: '',
+      date_from: '',
+      date_to: '',
     });
 
     this.loadRuns();
@@ -191,6 +207,14 @@ export class TestRunListPage implements OnInit {
       });
   }
 
+  private toStartOfDay(date: string): string {
+    return `${date}T00:00:00Z`;
+  }
+
+  private toEndOfDay(date: string): string {
+    return `${date}T23:59:59.999Z`;
+  }
+
   private loadProjects(): void {
     this.projectService.getProjects().subscribe({
       next: (projects) => {
@@ -214,6 +238,8 @@ export class TestRunListPage implements OnInit {
       project_id?: string;
       status?: TestStatus;
       software_version?: string;
+      date_from?: string;
+      date_to?: string;
     } = {},
   ): void {
     this.loading.set(true);

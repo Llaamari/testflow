@@ -127,4 +127,24 @@ describe('TestRunService', () => {
 
     request.flush([]);
   });
+
+  it('should send date filters as query parameters', () => {
+    service.getRuns({
+      date_from: '2026-08-01T00:00:00Z',
+      date_to: '2026-08-16T23:59:59.999Z',
+    }).subscribe();
+
+    const request = httpTesting.expectOne(
+      (request) =>
+        request.url === `${API_BASE_URL}/test-runs`
+        && request.params.get('date_from')
+          === '2026-08-01T00:00:00Z'
+        && request.params.get('date_to')
+          === '2026-08-16T23:59:59.999Z',
+    );
+
+    expect(request.request.method).toBe('GET');
+
+    request.flush([]);
+  });
 });
