@@ -1,3 +1,5 @@
+import os
+
 from datetime import UTC, datetime, timedelta
 from random import Random
 
@@ -62,7 +64,10 @@ PROJECTS = [
     },
 ]
 
-MONGO_URI = "mongodb://localhost:27017/testflow"
+MONGO_URI = os.getenv(
+    "MONGO_URI",
+    "mongodb://localhost:27017/testflow",
+)
 
 
 def reset_database() -> None:

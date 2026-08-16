@@ -8,5 +8,27 @@ services:
     volumes:
       - testflow_mongodb_data:/data/db
 
+  backend:
+    build:
+      context: ./backend
+    container_name: testflow-backend
+    restart: unless-stopped
+    environment:
+      MONGO_URI: mongodb://mongodb:27017/testflow
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongodb
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: testflow-frontend
+    restart: unless-stopped
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+
 volumes:
   testflow_mongodb_data:
