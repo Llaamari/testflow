@@ -1,13 +1,13 @@
 name: TestFlow CI
 
 on:
-    push:
-        branches:
-            - main
-    pull_request:
-        branches:
-        - main
-    workflow_dispatch:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
 
 permissions:
   contents: read
