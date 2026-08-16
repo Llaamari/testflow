@@ -1,0 +1,186 @@
+.run-selector {
+  margin-bottom: 20px;
+}
+
+.import-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+
+.panel,
+.validation-panel,
+.success-panel,
+.state-panel {
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.panel-header {
+  margin-bottom: 20px;
+}
+
+.panel-header h2,
+.validation-panel h2,
+.success-panel h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.panel-header p,
+.success-panel p {
+  margin: 6px 0 0;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.form-field label,
+.file-upload label {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.form-field select,
+.form-field textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  outline: none;
+  background: var(--background);
+  color: var(--text-primary);
+}
+
+.form-field textarea {
+  resize: vertical;
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.form-field select:focus,
+.form-field textarea:focus {
+  border-color: var(--accent);
+}
+
+.file-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.selected-file {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--background);
+}
+
+.selected-file strong {
+  font-size: 13px;
+}
+
+.selected-file span {
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+
+.requirements {
+  margin: 20px 0;
+}
+
+.requirements h3 {
+  margin: 0 0 10px;
+  font-size: 13px;
+}
+
+.requirements code {
+  display: inline-block;
+  margin: 0 5px 5px 0;
+  padding: 4px 7px;
+  border-radius: 5px;
+  background: var(--surface-secondary);
+  font-size: 11px;
+}
+
+.primary-button {
+  margin-top: 18px;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 7px;
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.primary-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.validation-panel,
+.success-panel,
+.state-panel {
+  margin-bottom: 20px;
+}
+
+.validation-panel {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--status-failed) 30%,
+      var(--border)
+    );
+}
+
+.validation-panel ul {
+  margin: 14px 0 0;
+  padding-left: 20px;
+}
+
+.validation-panel li {
+  margin: 8px 0;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.validation-panel code {
+  color: var(--status-failed);
+}
+
+.success-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.error-state {
+  color: var(--status-failed);
+}
+
+@media (max-width: 900px) {
+  .import-grid {
+    grid-template-columns: 1fr;
+  }
+}

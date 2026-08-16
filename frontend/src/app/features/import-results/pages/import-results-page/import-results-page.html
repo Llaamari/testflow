@@ -1,6 +1,193 @@
 <header class="page-header">
   <div>
     <h1>Import Results</h1>
-    <p>Import test results from JSON or Parquet data.</p>
+    <p>
+      Import automated test results from JSON or Parquet data.
+    </p>
   </div>
 </header>
+
+<section class="panel run-selector">
+  <div class="panel-header">
+    <h2>Target Test Run</h2>
+    <p>
+      Imported results will be attached to the selected run.
+    </p>
+  </div>
+
+  <div class="form-field">
+    <label for="test-run">
+      Test Run
+    </label>
+
+    <select
+      id="test-run"
+      [formControl]="importForm.controls.test_run_id"
+    >
+      <option value="">
+        Select test run
+      </option>
+
+      @for (run of runs(); track run.id) {
+        <option [value]="run.id">
+          {{ run.run_id }}
+          —
+          {{ run.software_version }}
+          —
+          {{ run.status }}
+        </option>
+      }
+    </select>
+  </div>
+</section>
+
+@if (errorMessage()) {
+  <section class="state-panel error-state">
+    {{ errorMessage() }}
+  </section>
+}
+
+@if (validationErrors().length > 0) {
+  <section class="validation-panel">
+    <h2>Validation Errors</h2>
+
+    <ul>
+      @for (
+        error of validationErrors();
+        track $index
+      ) {
+        <li>
+          @if (error.row !== undefined) {
+            <strong>
+              Row {{ error.row }}:
+            </strong>
+          }
+
+          @if (error.field) {
+            <code>{{ error.field }}</code>
+          }
+
+          {{ error.message }}
+        </li>
+      }
+    </ul>
+  </section>
+}
+
+@if (importSummary(); as summary) {
+  <section class="success-panel">
+    <div>
+      <h2>Import Complete</h2>
+
+      <p>
+        {{ summary.imported_count }}
+        result(s) imported successfully.
+      </p>
+    </div>
+
+    <app-status-badge
+      [status]="summary.run_status"
+    />
+  </section>
+}
+
+<section class="import-grid">
+  <section class="panel">
+    <div class="panel-header">
+      <h2>JSON Import</h2>
+
+      <p>
+        Paste a JSON result payload.
+      </p>
+    </div>
+
+    <div class="form-field">
+      <label for="json-data">
+        JSON Data
+      </label>
+
+      <textarea
+        id="json-data"
+        rows="16"
+        [formControl]="importForm.controls.json_data"
+        placeholder='{
+  "results": [
+    {
+      "test_name": "waypoint_navigation",
+      "status": "PASSED",
+      "duration_ms": 120,
+      "timestamp": "2026-08-16T10:00:00Z"
+    }
+  ]
+}'
+      ></textarea>
+    </div>
+
+    <button
+      type="button"
+      class="primary-button"
+      [disabled]="importing()"
+      (click)="importJson()"
+    >
+      @if (importing()) {
+        Importing...
+      } @else {
+        Import JSON
+      }
+    </button>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Parquet Import</h2>
+
+      <p>
+        Upload a Parquet file containing test result rows.
+      </p>
+    </div>
+
+    <div class="file-upload">
+      <label for="parquet-file">
+        Choose Parquet File
+      </label>
+
+      <input
+        id="parquet-file"
+        type="file"
+        accept=".parquet"
+        (change)="onFileSelected($event)"
+      />
+
+      @if (selectedFile(); as file) {
+        <div class="selected-file">
+          <strong>{{ file.name }}</strong>
+          <span>
+            {{ file.size }} bytes
+          </span>
+        </div>
+      }
+    </div>
+
+    <div class="requirements">
+      <h3>Required columns</h3>
+
+      <code>test_name</code>
+      <code>status</code>
+      <code>duration_ms</code>
+      <code>timestamp</code>
+    </div>
+
+    <button
+      type="button"
+      class="primary-button"
+      [disabled]="importing()"
+      (click)="importParquet()"
+    >
+      @if (importing()) {
+        Importing...
+      } @else {
+        Import Parquet
+      }
+    </button>
+  </section>
+</section>
