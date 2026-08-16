@@ -4,3 +4,139 @@
     <p>Manage software testing projects.</p>
   </div>
 </header>
+
+<section class="projects-layout">
+  <section class="panel">
+    <div class="panel-header">
+      <div>
+        <h2>Create Project</h2>
+        <p>Add a new software testing project.</p>
+      </div>
+    </div>
+
+    <form
+      [formGroup]="projectForm"
+      (ngSubmit)="createProject()"
+      class="project-form"
+    >
+      <div class="form-field">
+        <label for="project-name">
+          Name
+        </label>
+
+        <input
+          id="project-name"
+          type="text"
+          formControlName="name"
+          placeholder="Autonomous Drone Control System"
+        />
+
+        @if (
+          projectForm.controls.name.touched
+          && projectForm.controls.name.hasError('required')
+        ) {
+          <p class="field-error">
+            Project name is required.
+          </p>
+        }
+
+        @if (
+          projectForm.controls.name.touched
+          && projectForm.controls.name.hasError('maxlength')
+        ) {
+          <p class="field-error">
+            Project name is too long.
+          </p>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="project-description">
+          Description
+        </label>
+
+        <textarea
+          id="project-description"
+          formControlName="description"
+          rows="4"
+          placeholder="Describe the fictional testing project."
+        ></textarea>
+
+        @if (
+          projectForm.controls.description.touched
+          && projectForm.controls.description.hasError('maxlength')
+        ) {
+          <p class="field-error">
+            Description is too long.
+          </p>
+        }
+      </div>
+
+      <button
+        type="submit"
+        class="primary-button"
+        [disabled]="saving()"
+      >
+        @if (saving()) {
+          Creating...
+        } @else {
+          Create Project
+        }
+      </button>
+    </form>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header">
+      <div>
+        <h2>Projects</h2>
+        <p>
+          {{ projects().length }}
+          testing project(s)
+        </p>
+      </div>
+    </div>
+
+    @if (loading()) {
+      <div class="state-panel">
+        Loading projects...
+      </div>
+    } @else if (errorMessage()) {
+      <div class="state-panel error-state">
+        {{ errorMessage() }}
+      </div>
+    } @else if (projects().length === 0) {
+      <div class="empty-state">
+        <h3>No projects yet</h3>
+        <p>
+          Create your first project using the form.
+        </p>
+      </div>
+    } @else {
+      <div class="project-list">
+        @for (project of projects(); track project.id) {
+          <article class="project-card">
+            <div>
+              <h3>{{ project.name }}</h3>
+
+              @if (project.description) {
+                <p>{{ project.description }}</p>
+              } @else {
+                <p class="muted">
+                  No description.
+                </p>
+              }
+            </div>
+
+            <div class="project-meta">
+              <span>
+                Created:
+                {{ project.created_at | date:'mediumDate' }}
+              </span>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </section>
+</section>
