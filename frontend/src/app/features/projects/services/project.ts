@@ -28,4 +28,22 @@ export class ProjectService {
       request,
     );
   }
+
+  updateProject(
+    projectId: string,
+    request: CreateProjectRequest,
+  ): Observable<Project> {
+    return this.http.patch<Project>(
+      `${API_BASE_URL}/projects/${projectId}`,
+      request,
+    );
+  }
+
+  deleteProject(
+    projectId: string,
+  ): Observable<void> {
+    return this.http.delete<void>(
+      `${API_BASE_URL}/projects/${projectId}`,
+    );
+  }
 }

@@ -116,24 +116,95 @@
       <div class="project-list">
         @for (project of projects(); track project.id) {
           <article class="project-card">
-            <div>
-              <h3>{{ project.name }}</h3>
-
-              @if (project.description) {
-                <p>{{ project.description }}</p>
-              } @else {
-                <p class="muted">
-                  No description.
-                </p>
-              }
-            </div>
-
-            <div class="project-meta">
-              <span>
-                Created:
-                {{ project.created_at | date:'mediumDate' }}
-              </span>
-            </div>
+            @if (editingProjectId() === project.id) {
+              <form
+                [formGroup]="editForm"
+                (ngSubmit)="saveProject(project.id)"
+                class="project-form"
+              >
+                <div class="form-field">
+                  <label>
+                    Name
+                  </label>
+                  
+                  <input
+                    type="text"
+                    formControlName="name"
+                  />
+                </div>
+                
+                <div class="form-field">
+                  <label>
+                    Description
+                  </label>
+                  
+                  <textarea
+                    rows="3"
+                    formControlName="description"
+                  ></textarea>
+                </div>
+                
+                <div class="card-actions">
+                  <button
+                    type="submit"
+                    class="primary-button"
+                    [disabled]="saving()"
+                  >
+                    Save
+                  </button>
+                  
+                  <button
+                    type="button"
+                    class="secondary-button"
+                    (click)="cancelEditing()"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            } @else {
+              <div>
+                <h3>{{ project.name }}</h3>
+                
+                @if (project.description) {
+                  <p>{{ project.description }}</p>
+                } @else {
+                  <p class="muted">
+                    No description.
+                  </p>
+                }
+              </div>
+              
+              <div class="project-meta">
+                <span>
+                  Created:
+                  {{ project.created_at | date:'mediumDate' }}
+                </span>
+              </div>
+              
+              <div class="card-actions">
+                <button
+                  type="button"
+                  class="secondary-button"
+                  (click)="startEditing(project)"
+                >
+                  Edit
+                </button>
+                
+                <button
+                  type="button"
+                  class="danger-button"
+                  [disabled]="deletingProjectId() === project.id"
+                  (click)="deleteProject(project.id)"
+                >
+                  @if (deletingProjectId() === project.id) {
+                    Deleting...
+                  } @else {
+                    Delete
+                  }
+                </button>
+              </div>
+            }
           </article>
         }
       </div>
