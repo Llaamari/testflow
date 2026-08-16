@@ -1,0 +1,147 @@
+<a
+  routerLink="/projects"
+  class="back-link"
+>
+  ← Back to Projects
+</a>
+
+@if (loading()) {
+  <section class="state-panel">
+    Loading project...
+  </section>
+} @else if (errorMessage() && !project()) {
+  <section class="state-panel error-state">
+    {{ errorMessage() }}
+  </section>
+} @else if (project(); as currentProject) {
+  <header class="page-header">
+    <div>
+      <h1>{{ currentProject.name }}</h1>
+
+      @if (currentProject.description) {
+        <p>{{ currentProject.description }}</p>
+      } @else {
+        <p>No project description.</p>
+      }
+    </div>
+  </header>
+
+  <section class="project-summary">
+    <div>
+      <span class="summary-label">Created</span>
+      <strong>
+        {{ currentProject.created_at | date:'medium' }}
+      </strong>
+    </div>
+
+    <div>
+      <span class="summary-label">Test Suites</span>
+      <strong>{{ suites().length }}</strong>
+    </div>
+  </section>
+
+  @if (errorMessage()) {
+    <section class="state-panel error-state">
+      {{ errorMessage() }}
+    </section>
+  }
+
+  <section class="details-layout">
+    <section class="panel">
+      <div class="panel-header">
+        <h2>Create Test Suite</h2>
+        <p>Add a test suite to this project.</p>
+      </div>
+
+      <form
+        [formGroup]="suiteForm"
+        (ngSubmit)="createSuite()"
+        class="suite-form"
+      >
+        <div class="form-field">
+          <label for="suite-name">
+            Name
+          </label>
+
+          <input
+            id="suite-name"
+            type="text"
+            formControlName="name"
+            placeholder="Navigation Tests"
+          />
+
+          @if (
+            suiteForm.controls.name.touched
+            && suiteForm.controls.name.hasError('required')
+          ) {
+            <p class="field-error">
+              Test suite name is required.
+            </p>
+          }
+        </div>
+
+        <div class="form-field">
+          <label for="suite-description">
+            Description
+          </label>
+
+          <textarea
+            id="suite-description"
+            rows="4"
+            formControlName="description"
+            placeholder="Describe the purpose of this test suite."
+          ></textarea>
+        </div>
+
+        <button
+          type="submit"
+          class="primary-button"
+          [disabled]="savingSuite()"
+        >
+          @if (savingSuite()) {
+            Creating...
+          } @else {
+            Create Test Suite
+          }
+        </button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <h2>Test Suites</h2>
+        <p>{{ suites().length }} suite(s)</p>
+      </div>
+
+      @if (suites().length === 0) {
+        <div class="empty-state">
+          <h3>No test suites yet</h3>
+          <p>
+            Create the first suite using the form.
+          </p>
+        </div>
+      } @else {
+        <div class="suite-list">
+          @for (suite of suites(); track suite.id) {
+            <article class="suite-card">
+              <h3>{{ suite.name }}</h3>
+
+              @if (suite.description) {
+                <p>{{ suite.description }}</p>
+              } @else {
+                <p class="muted">
+                  No description.
+                </p>
+              }
+
+              <div class="suite-meta">
+                Created:
+                {{ suite.created_at | date:'mediumDate' }}
+              </div>
+            </article>
+          }
+        </div>
+      }
+    </section>
+  </section>
+}

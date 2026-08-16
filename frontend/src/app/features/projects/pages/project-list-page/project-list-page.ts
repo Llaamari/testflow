@@ -13,12 +13,14 @@ import {
 
 import { Project } from '../../models/project';
 import { ProjectService } from '../../services/project';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-project-list-page',
   imports: [
     DatePipe,
     ReactiveFormsModule,
+    RouterLink,
   ],
   templateUrl: './project-list-page.html',
   styleUrl: './project-list-page.css',

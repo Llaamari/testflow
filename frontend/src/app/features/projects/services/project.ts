@@ -46,4 +46,12 @@ export class ProjectService {
       `${API_BASE_URL}/projects/${projectId}`,
     );
   }
+
+  getProject(
+    projectId: string,
+  ): Observable<Project> {
+    return this.http.get<Project>(
+      `${API_BASE_URL}/projects/${projectId}`,
+    );
+  }
 }
