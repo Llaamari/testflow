@@ -33,6 +33,34 @@ export class DashboardPage implements OnInit {
     this.loadDashboard();
   }
 
+  passedPercentage(stats: DashboardStats): number {
+    return this.calculatePercentage(
+      stats.status_distribution.PASSED,
+      stats.test_results,
+    );
+  }
+
+  failedPercentage(stats: DashboardStats): number {
+    return this.calculatePercentage(
+      stats.status_distribution.FAILED,
+      stats.test_results,
+    );
+  }
+
+  errorPercentage(stats: DashboardStats): number {
+    return this.calculatePercentage(
+      stats.status_distribution.ERROR,
+      stats.test_results,
+    );
+  }
+
+  pendingPercentage(stats: DashboardStats): number {
+    return this.calculatePercentage(
+      stats.status_distribution.PENDING,
+      stats.test_results,
+    );
+  }
+
   private loadDashboard(): void {
     this.loading.set(true);
     this.errorMessage.set(null);
@@ -52,5 +80,18 @@ export class DashboardPage implements OnInit {
         this.loading.set(false);
       },
     });
+  }
+
+  private calculatePercentage(
+    value: number,
+    total: number,
+  ): number {
+    if (total === 0) {
+      return 0;
+    }
+
+    return Math.round(
+      (value / total) * 1000,
+    ) / 10;
   }
 }

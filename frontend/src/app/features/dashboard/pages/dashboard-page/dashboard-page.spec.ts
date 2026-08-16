@@ -57,6 +57,55 @@ describe('DashboardPage', () => {
     expect(component.errorMessage()).toBeNull();
   });
 
+  it('should calculate status percentages', () => {
+    expect(
+      component.passedPercentage(dashboardStats),
+    ).toBeCloseTo(
+      dashboardStats.status_distribution.PASSED
+        / dashboardStats.test_results
+        * 100,
+      1,
+    );
+
+    expect(
+      component.failedPercentage(dashboardStats),
+    ).toBeCloseTo(
+      dashboardStats.status_distribution.FAILED
+        / dashboardStats.test_results
+        * 100,
+      1,
+    );
+  });
+
+  it('should return zero percentage when there are no results', () => {
+    const emptyStats: DashboardStats = {
+      ...dashboardStats,
+      test_results: 0,
+      status_distribution: {
+        PASSED: 0,
+        FAILED: 0,
+        ERROR: 0,
+        PENDING: 0,
+      },
+    };
+
+    expect(
+      component.passedPercentage(emptyStats),
+    ).toBe(0);
+
+    expect(
+      component.failedPercentage(emptyStats),
+    ).toBe(0);
+
+    expect(
+      component.errorPercentage(emptyStats),
+    ).toBe(0);
+
+    expect(
+      component.pendingPercentage(emptyStats),
+    ).toBe(0);
+  });
+
   it('should display dashboard statistics', () => {
     const element: HTMLElement = fixture.nativeElement;
 

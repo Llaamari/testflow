@@ -52,6 +52,110 @@
     />
   </section>
 
+  <section class="dashboard-panel status-panel">
+    <div class="panel-header">
+      <div>
+        <h2>Result Distribution</h2>
+        <p>Distribution of all imported test results.</p>
+      </div>
+    </div>
+
+    @if (dashboardStats.test_results === 0) {
+      <app-empty-state
+        title="No test results yet"
+        message="Import test results to see the status distribution."
+      />
+    } @else {
+      <div class="distribution-bar">
+        @if (passedPercentage(dashboardStats) > 0) {
+          <div
+            class="distribution-segment passed"
+            [style.width.%]="passedPercentage(dashboardStats)"
+            title="Passed"
+          ></div>
+        }
+
+        @if (failedPercentage(dashboardStats) > 0) {
+          <div
+            class="distribution-segment failed"
+            [style.width.%]="failedPercentage(dashboardStats)"
+            title="Failed"
+          ></div>
+        }
+
+        @if (errorPercentage(dashboardStats) > 0) {
+          <div
+            class="distribution-segment error"
+            [style.width.%]="errorPercentage(dashboardStats)"
+            title="Error"
+          ></div>
+        }
+
+        @if (pendingPercentage(dashboardStats) > 0) {
+          <div
+            class="distribution-segment pending"
+            [style.width.%]="pendingPercentage(dashboardStats)"
+            title="Pending"
+          ></div>
+        }
+      </div>
+
+      <div class="distribution-legend">
+        <div class="legend-item">
+          <span class="legend-dot passed"></span>
+
+          <div>
+            <strong>PASSED</strong>
+            <span>
+              {{ dashboardStats.status_distribution.PASSED }}
+              ·
+              {{ passedPercentage(dashboardStats) }}%
+            </span>
+          </div>
+        </div>
+
+        <div class="legend-item">
+          <span class="legend-dot failed"></span>
+
+          <div>
+            <strong>FAILED</strong>
+            <span>
+              {{ dashboardStats.status_distribution.FAILED }}
+              ·
+              {{ failedPercentage(dashboardStats) }}%
+            </span>
+          </div>
+        </div>
+
+        <div class="legend-item">
+          <span class="legend-dot error"></span>
+
+          <div>
+            <strong>ERROR</strong>
+            <span>
+              {{ dashboardStats.status_distribution.ERROR }}
+              ·
+              {{ errorPercentage(dashboardStats) }}%
+            </span>
+          </div>
+        </div>
+
+        <div class="legend-item">
+          <span class="legend-dot pending"></span>
+
+          <div>
+            <strong>PENDING</strong>
+            <span>
+              {{ dashboardStats.status_distribution.PENDING }}
+              ·
+              {{ pendingPercentage(dashboardStats) }}%
+            </span>
+          </div>
+        </div>
+      </div>
+    }
+  </section>
+
   <section class="dashboard-panel">
     <div class="panel-header">
       <div>

@@ -21,6 +21,93 @@
   color: var(--text-secondary);
 }
 
+.status-panel {
+  margin-bottom: 24px;
+}
+
+.distribution-bar {
+  display: flex;
+  width: 100%;
+  height: 14px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--surface-secondary);
+}
+
+.distribution-segment {
+  min-width: 2px;
+  height: 100%;
+}
+
+.distribution-segment.passed {
+  background: var(--status-passed);
+}
+
+.distribution-segment.failed {
+  background: var(--status-failed);
+}
+
+.distribution-segment.error {
+  background: var(--status-error);
+}
+
+.distribution-segment.pending {
+  background: var(--status-pending);
+}
+
+.distribution-legend {
+  display: grid;
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+}
+
+.legend-dot {
+  flex: 0 0 auto;
+  width: 9px;
+  height: 9px;
+  margin-top: 4px;
+  border-radius: 50%;
+}
+
+.legend-dot.passed {
+  background: var(--status-passed);
+}
+
+.legend-dot.failed {
+  background: var(--status-failed);
+}
+
+.legend-dot.error {
+  background: var(--status-error);
+}
+
+.legend-dot.pending {
+  background: var(--status-pending);
+}
+
+.legend-item div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.legend-item strong {
+  font-size: 11px;
+}
+
+.legend-item span {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
 .error-state {
   color: var(--status-failed);
 }
@@ -101,6 +188,19 @@ tbody tr:last-child td {
 
 @media (max-width: 600px) {
   .statistics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .distribution-legend {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 450px) {
+  .distribution-legend {
     grid-template-columns: 1fr;
   }
 }
