@@ -61,8 +61,19 @@ export class TestRunListPage implements OnInit {
 
   readonly runForm = this.formBuilder.nonNullable.group({
     project_id: ['', Validators.required],
-    test_suite_id: ['', Validators.required],
-    software_version: ['', Validators.required],
+
+    test_suite_id: [
+      {
+        value: '',
+        disabled: true,
+      },
+      Validators.required,
+    ],
+
+    software_version: [
+      '',
+      Validators.required,
+    ],
   });
 
   ngOnInit(): void {
@@ -99,7 +110,11 @@ export class TestRunListPage implements OnInit {
     const projectId =
       this.runForm.controls.project_id.value;
 
-    this.runForm.controls.test_suite_id.setValue('');
+    const suiteControl =
+      this.runForm.controls.test_suite_id;
+
+    suiteControl.reset('');
+    suiteControl.disable();
 
     if (!projectId) {
       this.suites.set([]);
@@ -111,6 +126,10 @@ export class TestRunListPage implements OnInit {
       .subscribe({
         next: (suites) => {
           this.suites.set(suites);
+
+          if (suites.length > 0) {
+            suiteControl.enable();
+          }
         },
         error: (error) => {
           console.error(
@@ -119,6 +138,7 @@ export class TestRunListPage implements OnInit {
           );
 
           this.suites.set([]);
+
           this.errorMessage.set(
             'Test suites could not be loaded.',
           );
@@ -150,7 +170,9 @@ export class TestRunListPage implements OnInit {
             test_suite_id: '',
             software_version: '',
           });
-
+          
+          this.runForm.controls.test_suite_id.disable();
+          
           this.suites.set([]);
           this.creating.set(false);
         },
