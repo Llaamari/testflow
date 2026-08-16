@@ -4,3 +4,88 @@
     <p>Overview of automated test activity.</p>
   </div>
 </header>
+
+@if (loading()) {
+  <section class="state-panel">
+    Loading dashboard...
+  </section>
+} @else if (errorMessage()) {
+  <section class="state-panel error-state">
+    {{ errorMessage() }}
+  </section>
+} @else if (stats(); as dashboardStats) {
+  <section class="statistics-grid">
+    <app-statistics-card
+      label="Projects"
+      [value]="dashboardStats.projects"
+    />
+
+    <app-statistics-card
+      label="Test Runs"
+      [value]="dashboardStats.test_runs"
+    />
+
+    <app-statistics-card
+      label="Pass Rate"
+      [value]="dashboardStats.pass_rate + '%'"
+      helperText="Completed test results"
+    />
+
+    <app-statistics-card
+      label="Failed"
+      [value]="dashboardStats.failed"
+    />
+
+    <app-statistics-card
+      label="Errors"
+      [value]="dashboardStats.errors"
+    />
+
+    <app-statistics-card
+      label="Pending"
+      [value]="dashboardStats.pending"
+    />
+  </section>
+
+  <section class="dashboard-panel">
+    <div class="panel-header">
+      <div>
+        <h2>Recent Test Runs</h2>
+        <p>Most recently started test executions.</p>
+      </div>
+    </div>
+
+    @if (dashboardStats.recent_runs.length === 0) {
+      <div class="empty-state">
+        No test runs yet.
+      </div>
+    } @else {
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Run ID</th>
+              <th>Version</th>
+              <th>Status</th>
+              <th>Started</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (
+              run of dashboardStats.recent_runs;
+              track run.id
+            ) {
+              <tr>
+                <td>{{ run.run_id }}</td>
+                <td>{{ run.software_version }}</td>
+                <td>{{ run.status }}</td>
+                <td>{{ run.started_at }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+}

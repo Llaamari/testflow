@@ -1,0 +1,11 @@
+<article class="statistics-card">
+  <p class="label">{{ label() }}</p>
+
+  <p class="value">{{ value() }}</p>
+
+  @if (helperText()) {
+    <p class="helper-text">
+      {{ helperText() }}
+    </p>
+  }
+</article>

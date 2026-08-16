@@ -10,11 +10,21 @@ from app.routes.test_results import test_results_bp
 from app.routes.imports import imports_bp
 from app.database import create_indexes, init_database
 from app.routes.dashboard import dashboard_bp
+from flask_cors import CORS
 
 
 def create_app(config_class=DevelopmentConfig):
     app = Flask(__name__)
     app.config.from_object(config_class)
+
+    CORS(
+        app,
+        resources={
+            r"/api/*": {
+                "origins": "http://localhost:4200"
+            }
+        },
+    )
 
     init_database(app.config["MONGO_URI"])
     create_indexes()
