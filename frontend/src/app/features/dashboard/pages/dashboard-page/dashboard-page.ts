@@ -3,10 +3,16 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { StatisticsCard } from '../../../../shared/components/statistics-card/statistics-card';
 import { DashboardStats } from '../../models/dashboard-stats';
 import { DashboardService } from '../../services/dashboard';
+import { StatusBadge } from '../../../../shared/components/status-badge/status-badge';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard-page',
-  imports: [StatisticsCard],
+  imports: [
+    DatePipe,
+    StatisticsCard,
+    StatusBadge,
+  ],
   templateUrl: './dashboard-page.html',
   styleUrl: './dashboard-page.css',
 })

@@ -1,0 +1,27 @@
+<span
+  class="status-badge"
+  [class.status-passed]="status() === 'PASSED'"
+  [class.status-failed]="status() === 'FAILED'"
+  [class.status-error]="status() === 'ERROR'"
+  [class.status-pending]="status() === 'PENDING'"
+>
+  @switch (status()) {
+    @case ('PASSED') {
+      <span class="status-icon" aria-hidden="true">✓</span>
+    }
+
+    @case ('FAILED') {
+      <span class="status-icon" aria-hidden="true">×</span>
+    }
+
+    @case ('ERROR') {
+      <span class="status-icon" aria-hidden="true">!</span>
+    }
+
+    @case ('PENDING') {
+      <span class="status-icon" aria-hidden="true">…</span>
+    }
+  }
+
+  {{ status() }}
+</span>

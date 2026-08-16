@@ -50,6 +50,23 @@
   overflow-x: auto;
 }
 
+.run-id {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.timestamp {
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;

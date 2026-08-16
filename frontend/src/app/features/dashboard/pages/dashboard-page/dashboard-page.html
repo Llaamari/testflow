@@ -45,6 +45,11 @@
       label="Pending"
       [value]="dashboardStats.pending"
     />
+
+    <app-statistics-card
+      label="Test Results"
+      [value]="dashboardStats.test_results"
+    />
   </section>
 
   <section class="dashboard-panel">
@@ -65,7 +70,7 @@
           <thead>
             <tr>
               <th>Run ID</th>
-              <th>Version</th>
+              <th>Software Version</th>
               <th>Status</th>
               <th>Started</th>
             </tr>
@@ -77,10 +82,23 @@
               track run.id
             ) {
               <tr>
-                <td>{{ run.run_id }}</td>
-                <td>{{ run.software_version }}</td>
-                <td>{{ run.status }}</td>
-                <td>{{ run.started_at }}</td>
+                <td class="run-id">
+                  {{ run.run_id }}
+                </td>
+                
+                <td>
+                  {{ run.software_version }}
+                </td>
+                
+                <td>
+                  <app-status-badge
+                    [status]="run.status"
+                  />
+                </td>
+                
+                <td class="timestamp">
+                  {{ run.started_at | date:'medium' }}
+                </td>
               </tr>
             }
           </tbody>

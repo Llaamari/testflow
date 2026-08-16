@@ -1,3 +1,5 @@
+import { TestStatus } from '../../../shared/models/test-status';
+
 export interface DashboardStats {
   projects: number;
   test_runs: number;
@@ -21,7 +23,7 @@ export interface RecentTestRun {
   project_id: string;
   test_suite_id: string;
   software_version: string;
-  status: 'PASSED' | 'FAILED' | 'ERROR' | 'PENDING';
+  status: TestStatus;
   started_at: string;
   completed_at: string | null;
   created_at: string;

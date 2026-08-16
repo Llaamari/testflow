@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { AppLayout } from './app-layout';
 
@@ -9,14 +10,23 @@ describe('AppLayout', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppLayout],
+      providers: [
+        provideRouter([]),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppLayout);
     component = fixture.componentInstance;
-    await fixture.whenStable();
+    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should render the TestFlow brand', () => {
+    expect(
+      fixture.nativeElement.textContent,
+    ).toContain('TestFlow');
   });
 });
