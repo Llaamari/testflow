@@ -1,8 +1,8 @@
 # TestFlow – Test Result Management Dashboard
 
-TestFlow is a full-stack web application for managing, importing, and analyzing automated software test results.
+TestFlow is a full-stack web application for managing, importing, filtering and analyzing automated software test results.
 
-The project demonstrates full-stack software development, REST API design, test-data processing, automated testing, and maintainable software architecture using Python, Flask, Angular, TypeScript, MongoDB, pandas, and PyArrow.
+Built with Angular, TypeScript, Python, Flask, MongoDB, pandas, PyArrow, Docker and automated testing.
 
 > This is an independent portfolio project created to demonstrate full-stack software development and test-data processing skills. It is not affiliated with, derived from, or based on any proprietary system of my current or former employers.
 
@@ -108,7 +108,7 @@ Repositories                 |
                  v
               MongoDB
 ```
-Backend responsibilities are separated into routes, services, repositories, validators, models, and database infrastructure.
+Backend responsibilities are separated into routes, services, repositories, validators, models and database infrastructure.
 
 Import formats are normalized before entering the shared import service:
 ```text
@@ -298,7 +298,7 @@ It creates:
 - 12 test suites
 - 12 test runs
 - multiple test results per run
-- PASSED, FAILED, ERROR, and PENDING states
+- PASSED, FAILED, ERROR and PENDING states
 - fictional performance measurements
 
 Run locally from the backend directory:
@@ -326,19 +326,19 @@ CI performs:
 - Angular production build
 ## Screenshots
 ### Dashboard
-![alt text](docs/screenshots/image.png)
+![TestFlow Dashboard](docs/screenshots/image.png)
 ### Projects
-![alt text](docs/screenshots/image-1.png)
+![TestFlow Projects](docs/screenshots/image-1.png)
 ### Project Details and Test Suites
-![alt text](docs/screenshots/image-2.png)
+![TestFlow Project Details](docs/screenshots/image-2.png)
 ### Test Runs
-![alt text](docs/screenshots/image-3.png)
+![TestFlow Test Runs](docs/screenshots/image-3.png)
 ### Test Run Details
-![alt text](docs/screenshots/image-4.png)
+![TestFlow Test Run Details](docs/screenshots/image-4.png)
 ### JSON / Parquet Import
-![alt text](docs/screenshots/image-5.png)
+![TestFlow Import Results](docs/screenshots/image-5.png)
 ### Dark Mode
-![alt text](docs/screenshots/image-6.png)
+![TestFlow Dark Mode](docs/screenshots/image-6.png)
 ## Design Goals
 The project prioritizes:
 
