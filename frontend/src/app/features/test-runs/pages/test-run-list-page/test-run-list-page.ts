@@ -20,6 +20,7 @@ import { TestStatus } from '../../../../shared/models/test-status';
 import { TestRun } from '../../models/test-run';
 import { TestRunService } from '../../services/test-run';
 import { RouterLink } from '@angular/router';
+import { getApiErrorMessage } from '../../../../core/api/api-error';
 
 @Component({
   selector: 'app-test-run-list-page',
@@ -199,7 +200,10 @@ export class TestRunListPage implements OnInit {
           );
 
           this.errorMessage.set(
-            'Test run could not be created.',
+            getApiErrorMessage(
+              error,
+              'Test run could not be created.',
+            ),
           );
 
           this.creating.set(false);
@@ -257,11 +261,19 @@ export class TestRunListPage implements OnInit {
             'Test runs request failed:',
             error,
           );
-
-          this.errorMessage.set(
-            'Test runs could not be loaded.',
+          
+          console.log(
+            'Backend error body:',
+            error?.error,
           );
-
+          
+          this.errorMessage.set(
+            getApiErrorMessage(
+              error,
+              'Test runs could not be loaded.',
+            ),
+          );
+          
           this.loading.set(false);
         },
       });

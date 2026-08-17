@@ -11,6 +11,7 @@ import { StatusBadge } from '../../../../shared/components/status-badge/status-b
 import { TestResult } from '../../models/test-result';
 import { TestRun } from '../../models/test-run';
 import { TestRunService } from '../../services/test-run';
+import { getApiErrorMessage } from '../../../../core/api/api-error';
 
 @Component({
   selector: 'app-test-run-details-page',
@@ -56,7 +57,10 @@ export class TestRunDetailsPage implements OnInit {
         console.error('Test run request failed:', error);
 
         this.errorMessage.set(
-          'Test run could not be loaded.',
+          getApiErrorMessage(
+            error,
+            'Test run could not be loaded.',
+          )
         );
 
         this.loading.set(false);
@@ -76,7 +80,10 @@ export class TestRunDetailsPage implements OnInit {
         );
 
         this.errorMessage.set(
-          'Test results could not be loaded.',
+          getApiErrorMessage(
+            error,
+            'Test results could not be loaded.',
+          )
         );
       },
     });

@@ -16,6 +16,7 @@ import { Project } from '../../models/project';
 import { ProjectService } from '../../services/project';
 import { TestSuite } from '../../../test-suites/models/test-suite';
 import { TestSuiteService } from '../../../test-suites/services/test-suite';
+import { getApiErrorMessage } from '../../../../core/api/api-error';
 
 @Component({
   selector: 'app-project-details-page',
@@ -126,7 +127,10 @@ export class ProjectDetailsPage implements OnInit {
           console.error('Test suite creation failed:', error);
 
           this.errorMessage.set(
-            'Test suite could not be created.',
+            getApiErrorMessage(
+              error,
+              'Test suite could not be created.',
+            ),
           );
 
           this.savingSuite.set(false);
@@ -186,7 +190,10 @@ export class ProjectDetailsPage implements OnInit {
           );
 
           this.errorMessage.set(
-            'Test suite could not be updated.',
+            getApiErrorMessage(
+              error,
+              'Test suite could not be updated.',
+            )
           );
 
           this.savingEditedSuite.set(false);
@@ -225,7 +232,10 @@ export class ProjectDetailsPage implements OnInit {
           );
 
           this.errorMessage.set(
-            'Test suite could not be deleted.',
+            getApiErrorMessage(
+              error,
+              'Test suite could not be deleted.',
+            )
           );
 
           this.deletingSuiteId.set(null);
@@ -243,7 +253,10 @@ export class ProjectDetailsPage implements OnInit {
         console.error('Project request failed:', error);
 
         this.errorMessage.set(
-          'Project could not be loaded.',
+          getApiErrorMessage(
+            error,
+            'Project could not be loaded.',
+          )
         );
 
         this.loading.set(false);
@@ -262,7 +275,10 @@ export class ProjectDetailsPage implements OnInit {
           console.error('Test suites request failed:', error);
 
           this.errorMessage.set(
-            'Test suites could not be loaded.',
+            getApiErrorMessage(
+              error,
+              'Test suites could not be loaded.',
+            )
           );
         },
       });

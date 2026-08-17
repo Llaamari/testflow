@@ -14,6 +14,7 @@ import {
 import { Project } from '../../models/project';
 import { ProjectService } from '../../services/project';
 import { RouterLink } from '@angular/router';
+import { getApiErrorMessage } from '../../../../core/api/api-error';
 
 @Component({
   selector: 'app-project-list-page',
@@ -102,7 +103,10 @@ export class ProjectListPage implements OnInit {
         console.error('Project creation failed:', error);
 
         this.errorMessage.set(
-          'Project could not be created.',
+          getApiErrorMessage(
+            error,
+            'Project could not be created.',
+          ),
         );
 
         this.saving.set(false);
@@ -159,7 +163,10 @@ export class ProjectListPage implements OnInit {
           console.error('Project update failed:', error);
 
           this.errorMessage.set(
-            'Project could not be updated.',
+            getApiErrorMessage(
+              error,
+              'Project could not be updated.',
+            ),
           );
 
           this.saving.set(false);
@@ -198,7 +205,10 @@ export class ProjectListPage implements OnInit {
           );
 
           this.errorMessage.set(
-            'Project could not be deleted.',
+            getApiErrorMessage(
+              error,
+              'Project could not be deleted.',
+            ),
           );
 
           this.deletingProjectId.set(null);
@@ -219,7 +229,10 @@ export class ProjectListPage implements OnInit {
         console.error('Projects request failed:', error);
 
         this.errorMessage.set(
-          'Projects could not be loaded.',
+          getApiErrorMessage(
+            error,
+            'Projects could not be loaded.',
+          ),
         );
 
         this.loading.set(false);
